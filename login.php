@@ -9,7 +9,7 @@
             require("config.php");
             $connessioneDB = new mysqli(SERVER, USER, PASSWORD, DATABASE);
             if ($connessioneDB->errno) {
-                $risposta = ['error' => 'Errore di connessione al database'];
+                $risposta = ['status' => 'error','error' => 'Errore di connessione al database'];
                 http_response_code(500);
                 exit (json_encode($risposta));
             }
@@ -21,7 +21,7 @@
             $risposteLogin = $dichiarazioneLogin->get_result();
 
             if ($risposteLogin->errno) {
-                $risposta = ['error' => 'Errore della query'];
+                $risposta = ['status' => 'error','error' => 'Errore della query'];
                 http_response_code(500);
                 exit (json_encode($risposta));
             }
@@ -32,17 +32,25 @@
                     if (password_hash($_POST["password"], PASSWORD_DEFAULT, $options) == $riga['password_hash']) {
                         http_response_code(200);
                         $_SESSION["user_id"] = $riga["user_id"];
-                        $risposta = ['success' => 'login effettuato'];
+                        $risposta = ['status' => 'success'];
+                        exit(json_encode($risposta));
+                    }else{
+                        http_response_code(200);
+                        $risposta = ['status' => 'failed','reason'=>'email_or_password_already_exists'];
                         exit(json_encode($risposta));
                     }
                 }
+            }else{
+                http_response_code(200);
+                $risposta = ['status' => 'failed','reason'=>'email_or_password_already_exists'];
+                exit(json_encode($risposta));
             }
         }
     }else{
         /*
          * Mi autoinsulto in caso la richiesta sia sbagliata (es.faccio post invece di GET)
          */
-        $risposta = ['error' => 'Metodo di richiesta sbagliato'];
+        $risposta = ['error' => 'failed','reason'=>'bad_request_method'];
         http_response_code(400);                        //Bad request status code
         exit (json_encode($risposta));
     }

@@ -3,9 +3,10 @@
     if(isset($_POST['user_id'])){
         session_unset();
         session_destroy();
-        http_response_code(204);
+        http_response_code(200);
+        exit(json_encode(['status'=>'success']));
     }else{
-        http_response_code(400);
-        exit(json_encode(['error'=>'Nessuna sessione rilevata']));
+        http_response_code(200);
+        exit(json_encode(['status'=>'failed','reason'=>'session_does_not_exists']));
     }
 ?>
