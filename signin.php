@@ -53,8 +53,8 @@
         $riga_utente = $risultati_query->fetch_assoc();
         $user_id = $riga_utente["id"];
 
-        $dichiarazione = $connessioneDB->prepare("INSERT INTO utente(username,sesso,bio_personale,link_propic,discord_data) VALUES(?,'none','','','')");
-        $dichiarazione->bind_param("s",$username);
+        $dichiarazione = $connessioneDB->prepare("INSERT INTO utente(username,sesso,bio_personale,link_propic,discord_data,relate_user_id) VALUES(?,'none','','','',?)");
+        $dichiarazione->bind_param("s",$username,$user_id);
         $dichiarazione->execute();
         if($dichiarazione->errno){
             http_send_status(500);
