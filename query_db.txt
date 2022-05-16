@@ -1,0 +1,66 @@
+create table credenziali_utenti(
+	id int auto_increment primary key,
+	email varchar(64),
+	password_hash varchar(255),
+	password_salt varchar(8)
+);
+
+create table utente(
+	id int auto_increment primary key,
+	username varchar(64),
+	sesso varchar(8),
+	discord_data varchar(16),
+	bio_personale text,
+	link_propic varchar(255),
+	arma_preferita varchar(8),
+	preferenze_caccia varchar(8),
+	orario_libero_inizio time,
+	orario_libero_fine time,
+	HR int,
+	piattaforma varchar(8),
+	fk_utente int,
+	foreign key(fk_utente) references credenziali_utenti(id)
+);
+
+create table utenti_preferiti(
+	id int auto_increment primary key,
+	utente_salvato int,
+	fk_utente int,alter table credenziali_utenti auto_increment = 1000
+	foreign key(utente_salvato) references utente(fk_utente),
+	foreign key(fk_utente) references utente(fk_utente)
+);
+
+alter table credenziali_utenti auto_increment = 1000
+
+Query per api
+
+select id,password_hash 
+from credenziali_utenti cu 
+where email = 'domenicofazzolari03@gmail.com' 
+
+insert into credenziali_utenti (email,password_hash)
+values('domenicofazzolari03@gmail.com','$2y$10$YEPnwrjQWp6ci5mVFTBZp.GUUTj8feJcfnAbrf8Na6tli6Xo8jorW')
+
+select id
+from credenziali_utenti
+where email = 'domenicofazzolari03@gmail.com'
+
+insert into utente(username,fk_credenziali)
+values('Arogen',1001)
+
+alter table credenziali_utenti add unique(email)
+
+update utente 
+set 
+	username = 'Arogen',
+	sesso = 'uomo',
+	discord_data = 'Pius#2107',
+	bio_personale = 'A boi with a long longsword',
+	link_propic = 'path',
+	arma_preferita = 'lngswd',
+	preferenze_caccia = 'tryhard',
+	orario_libero_inizio = 14,
+	orario_libero_fine = 23,
+	HR = 69,
+	piattaforma = 'switch'
+where fk_credenziali = 1001
