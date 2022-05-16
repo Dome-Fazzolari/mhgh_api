@@ -1,54 +1,48 @@
 <?php
     session_start();
     if($_SERVER['REQUEST_METHOD'] === 'POST'){  //Verifico che la richiesta si post
-        if(isset($_POST["user_id"])){
+        if(isset($_SESSION["user_id"])){
             http_response_code(200);
-            $risposta = ['success' => 'login effettuato'];
+            $risposta = ['status' => 'success'];
             exit(json_encode($risposta));
         }else {
             require("config.php");
-            $connessioneDB = new mysqli(SERVER, USER, PASSWORD, DATABASE);
+            $connessioneDB = new mysqli(SERVER, UTENTE, PASSWORD, DATABASE);
             if ($connessioneDB->errno) {
                 $risposta = ['status' => 'error','error' => 'Errore di connessione al database'];
                 http_response_code(500);
                 exit (json_encode($risposta));
             }
+            echo "Accesso al db fatto";
+            $dichiarazioneLogin = $connessioneDB->prepare("select id,password_hash from credenziali_utenti where email = ? ");
+            $email = $_POST["email"];
+            $dichiarazioneLogin->bind_param("s", $email);
 
-            //query da rifare
-            $dichiarazioneLogin = $connessioneDB->prepare("SELECT CU.password_salt as 'password_salt',CU.password_hash as 'password_hash',U.username as 'username' FROM credenziali_utenti CU JOIN utente U on CU.id = U.related_user_id WHERE email = ?");
-            $dichiarazioneLogin->bind("s", $_POST["email"]);
             $dichiarazioneLogin->execute();
             $risposteLogin = $dichiarazioneLogin->get_result();
-
-            if ($risposteLogin->errno) {
-                $risposta = ['status' => 'error','error' => 'Errore della query'];
-                http_response_code(500);
-                exit (json_encode($risposta));
-            }
-
             if ($risposteLogin->num_rows > 0) {
                 while ($riga = $risposteLogin->fetch_assoc()) {
                     $options = ['salt' => $riga['password_salt']];
-                    if (password_hash($_POST["password"], PASSWORD_DEFAULT, $options) == $riga['password_hash']) {
+                    if (password_verify($_POST["password"],$riga["password_hash"])) {
                         http_response_code(200);
-                        $_SESSION["user_id"] = $riga["user_id"];
-                        $risposta = ['status' => 'success'];
+                        $_SESSION['user_id'] = $riga["id"];
+                        $risposta = ['status' => 'success','user_id'=>$riga["id"]];
                         exit(json_encode($risposta));
                     }else{
                         http_response_code(200);
-                        $risposta = ['status' => 'failed','reason'=>'email_or_password_already_exists'];
+                        $risposta = ['status' => 'failed','reason'=>'email_or_password_wrong'];
                         exit(json_encode($risposta));
                     }
                 }
             }else{
                 http_response_code(200);
-                $risposta = ['status' => 'failed','reason'=>'email_or_password_already_exists'];
+                $risposta = ['status' => 'failed','reason'=>'email_or_password_wrong'];
                 exit(json_encode($risposta));
             }
         }
     }else{
         /*
-         * Mi autoinsulto in caso la richiesta sia sbagliata (es.faccio post invece di GET)
+         * Mi autoinsulto in caso la richiesta sia sbagliata (es.faccio POST invece di GET)
          */
         $risposta = ['error' => 'failed','reason'=>'bad_request_method'];
         http_response_code(400);                        //Bad request status code

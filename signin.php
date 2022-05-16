@@ -5,65 +5,48 @@
 
         $username = $_POST["username"];
         $email = $_POST["email"];
-        $password = $_POST["password"];
+        $password_utente = $_POST["password"];
 
-        $connessioneDB = new mysqli(SERVER, USER, PASSWORD, DATABASE);
+        $hash = password_hash($password_utente, PASSWORD_DEFAULT);
+
+
+        $connessioneDB = new mysqli(SERVER, UTENTE, PASSWORD, DATABASE);
         if ($connessioneDB->errno) {
             $risposta = ['error' => 'Errore di connessione al database'];
             http_response_code(500);
             exit (json_encode($risposta));
         }
 
-        $dichiarazioneLogin = $connessioneDB->prepare("SELECT email FROM credenziali_utenti WHERE email = ?");
-        $dichiarazioneLogin->bind_param("s", $email);
-        $dichiarazioneLogin->execute();
-        $risposteLogin = $dichiarazioneLogin->get_result();
 
-        if ($risposteLogin->errno) {
-            $risposta = ['error' => 'Errore della query'];
+
+        $dichiarazioneInserimento = $connessioneDB->prepare("INSERT INTO credenziali_utenti(email,password_hash) VALUES (?,?)");
+        $dichiarazioneInserimento->bind_param("ss", $email,$hash);
+        echo "connesso al db<br>";
+        try{
+            $dichiarazioneInserimento->execute();
+        }catch(Exception $e){
             http_response_code(500);
-            exit (json_encode($risposta));
+            exit (json_encode(['status' => 'error','error'=>'user_already_exists']));
         }
 
-        if($risposteLogin->num_rows > 0){
-            $risposta = ['status' => 'failed','reason'=>'user_already_exists'];
-            http_response_code(200);
-            exit (json_encode($risposta));
-        }
-        $dichiarazione = $connessioneDB->prepare("INSERT INTO credenziali_utenti(email,password_salt,password_hash) VALUES(?,?,?)");
-        $password_salt = mcrypt_create_iv(5, MCRYPT_DEV_URANDOM);
-        $password_hash = password_hash(password,PASSWORD_DEFAULT,['salt'=>$password_salt]);
-        $dichiarazione->bind_param("sss",$email,$password_salt,$password_hash);
-        $dichiarazione->execute();
-        if($dichiarazione->errno){
-            http_send_status(500);
-            $risposta = ['status'=>'error','error'=>'query_error'];
-            exit(json_encode($risposta));
-        }
+        echo "\ninserito e verificato utente doppio";
 
         $dichiarazione = $connessioneDB->prepare("SELECT id FROM credenziali_utenti WHERE email = ?");
         $dichiarazione->bind_param("s",$email);
         $dichiarazione->execute();
-        if($dichiarazione->errno){
-            http_send_status(500);
-            $risposta = ['status'=>'error','error'=>'query_error'];
-            exit(json_encode($risposta));
-        }
+
         $risultati_query = $dichiarazione->get_result();
         $riga_utente = $risultati_query->fetch_assoc();
         $user_id = $riga_utente["id"];
 
-        $dichiarazione = $connessioneDB->prepare("INSERT INTO utente(username,sesso,bio_personale,link_propic,discord_data,relate_user_id) VALUES(?,'none','','','',?)");
-        $dichiarazione->bind_param("s",$username,$user_id);
+        $dichiarazione = $connessioneDB->prepare("INSERT INTO utente(username,fk_credenziali) VALUES(?,?)");
+        $dichiarazione->bind_param("si",$username,$user_id);
         $dichiarazione->execute();
-        if($dichiarazione->errno){
-            http_send_status(500);
-            $risposta = ['status'=>'error','error'=>'query_error'];
-            exit(json_encode($risposta));
-        }
+        $_SESSION["user_id"] = $user_id;
         http_send_status(200);
         $risposta = ['status'=>'success'];
         exit(json_encode($risposta));
+
     }else{
         $risposta = ['error' => 'Metodo di richiesta sbagliato'];
         http_response_code(400);                        //Bad request status code

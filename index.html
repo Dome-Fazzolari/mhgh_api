@@ -7,9 +7,107 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="hash.php" method="post">
-        <input type="text" name="password">
-        <input type="submit" value="hasha">
-    </form>
+    <div style="border: 1px solid black;padding: 10px">
+        <form action="signin.php" method="post">
+            <table>
+                <tr>
+                    <td><label for="username">Inserire username</label></td>
+                    <td><input type="text" name="username" id="username"></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Inserire email</label></td>
+                    <td><input type="text" name="email" id="email"></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Inserire la password</label></td>
+                    <td><input type="text" name="password" id="password"></td>
+                </tr>
+            </table>
+            <input type="submit" value="registrati">
+        </form>
+    </div><br>
+    <div style="border: 1px solid black;padding: 10px">
+        <form action="login.php" method="post">
+            <table>
+                <tr>
+                    <td><label for="email">Inserire email</label></td>
+                    <td><input type="text" name="email" id="email"></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Inserire password</label></td>
+                    <td><input type="text" name="password" id="password"></td>
+                </tr>
+            </table>
+            <input type="submit" value="Accedi">
+        </form>
+    </div><br>
+    <div style="border: 1px solid black;padding: 10px">
+        <form action="logout.php" method="post">
+            <input type="submit" value="logout">
+        </form>
+    </div><br>
+    <div style="border: 1px solid black;padding: 10px">
+        <form action="edit_profile.php" method="post">
+            <table>
+                <tr>
+                    <td><label for="username">username</label></td>
+                    <td><input type="text" name="username" id="username"></td>
+                </tr>
+                <tr>
+                    <td><label for="sesso">sesso</label></td>
+                    <td><input type="text" name="sesso" id="sesso"></td>
+                </tr>
+                <tr>
+                    <td><label for="discord_data">discord_data</label></td>
+                    <td><input type="text" name="discord_data" id="discord_data"></td>
+                </tr>
+                <tr>
+                    <td><label for="bio_personale">bio_personale</label></td>
+                    <td><input type="text" name="bio_personale" id="bio_personale"></td>
+                </tr>
+                <tr>
+                    <td><label for="link_propic">link_propic</label></td>
+                    <td><input type="text" name="link_propic" id="link_propic"></td>
+                </tr>
+                <tr>
+                    <td><label for="arma_preferita">arma_preferita</label></td>
+                    <td><input type="text" name="arma_preferita" id="arma_preferita"></td>
+                </tr>
+                <tr>
+                    <td><label for="preferenze_caccia">preferenze_caccia</label></td>
+                    <td><input type="text" name="preferenze_caccia" id="preferenze_caccia"></td>
+                </tr>
+                <tr>
+                    <td><label for="orario_libero_inizio">orario_libero_inizio</label></td>
+                    <td><input type="text" name="orario_libero_inizio" id="orario_libero_inizio"></td>
+                </tr>
+                <tr>
+                    <td><label for="orario_libero_fine">orario_libero_fine</label></td>
+                    <td><input type="text" name="orario_libero_fine" id="orario_libero_fine"></td>
+                </tr>
+                <tr>
+                    <td><label for="HR">HR</label></td>
+                    <td><input type="text" name="HR" id="HR"></td>
+                </tr>
+                <tr>
+                    <td><label for="piattaforma">piattaforma</label></td>
+                    <td><input type="text" name="piattaforma" id="piattaforma"></td>
+                </tr>
+            </table>
+            
+            <input type="submit" value="edit_profile">
+        </form>
+    </div><br>
+    <div style="border: 1px solid black;padding: 10px">
+        <form action="user.php" method="get">
+            <table>
+                <tr>
+                    <td><label for="user_id">Inserire user_id</label></td>
+                    <td><input type="text" name="user_id" id="user_id"></td>
+                </tr>
+            </table>
+            <input type="submit" value="ricerca">
+        </form>
+    </div>
 </body>
 </html>

@@ -64,3 +64,10 @@ set
 	HR = 69,
 	piattaforma = 'switch'
 where fk_credenziali = 1001
+
+
+query per dati utente
+
+select username,sesso,discord_data,bio_personale,link_propic,arma_preferita,preferenze_caccia,orario_libero_inizio,orario_libero_fine,HR,piattaforma
+from utente
+where fk_credenziali = 1001

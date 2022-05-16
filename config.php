@@ -1,6 +1,6 @@
 <?php
-    define("SERVER","localhost");
+    define("SERVER","127.0.0.1");
     define("UTENTE","root");
     define("PASSWORD","");
-    define("DATABASE","mhgh");
+    define("DATABASE","mugu");
 ?>
