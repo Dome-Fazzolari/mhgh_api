@@ -8,6 +8,7 @@
 </head>
 <body>
     <div style="border: 1px solid black;padding: 10px">
+        <h3>Registrazione</h3>
         <form action="signin.php" method="post">
             <table>
                 <tr>
@@ -27,6 +28,7 @@
         </form>
     </div><br>
     <div style="border: 1px solid black;padding: 10px">
+        <h3>Login</h3>
         <form action="login.php" method="post">
             <table>
                 <tr>
@@ -42,11 +44,13 @@
         </form>
     </div><br>
     <div style="border: 1px solid black;padding: 10px">
+        <h3>Logout</h3>
         <form action="logout.php" method="post">
             <input type="submit" value="logout">
         </form>
     </div><br>
     <div style="border: 1px solid black;padding: 10px">
+        <h3>Edit profile</h3>
         <form action="edit_profile.php" method="post">
             <table>
                 <tr>
@@ -99,6 +103,7 @@
         </form>
     </div><br>
     <div style="border: 1px solid black;padding: 10px">
+        <h3>Mostra utente</h3>
         <form action="user.php" method="get">
             <table>
                 <tr>
@@ -107,6 +112,18 @@
                 </tr>
             </table>
             <input type="submit" value="ricerca">
+        </form>
+    </div><br>
+    <div style="border: 1px solid black;padding: 10px">
+        <h3>Aggiungi a lista preferiti</h3>
+        <form action="add_favourites.php" method="get">
+            <table>
+                <tr>
+                    <td><label for="add_user_id">Inserisci user id</label></td>
+                    <td><input type="text" name="add_user_id" id="add_user_id"></td>
+                </tr>
+            </table>
+            <input type="submit" value="Aggiugi">
         </form>
     </div>
 </body>

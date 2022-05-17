@@ -13,7 +13,6 @@
                 http_response_code(500);
                 exit (json_encode($risposta));
             }
-            echo "Accesso al db fatto";
             $dichiarazioneLogin = $connessioneDB->prepare("select id,password_hash from credenziali_utenti where email = ? ");
             $email = $_POST["email"];
             $dichiarazioneLogin->bind_param("s", $email);
