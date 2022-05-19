@@ -1,4 +1,7 @@
 <?php
+    if(isset($_COOKIE['PHPSESSID'])){
+        session_id($_COOKIE['PHPSESSID']);
+    }
     session_start();
     if($_SERVER['REQUEST_METHOD']!=='GET'){
         $risposta = ['error' => 'failed','reason'=>'bad_request_method'];
@@ -7,13 +10,13 @@
     }
 
     if(!isset($_SESSION['user_id'])){
-        http_send_status(200);
-        exit(json_encode(['status'=>'failes','reason'=>'you_are_not_logged_in']));
+        http_response_code(200);
+        exit(json_encode(['status'=>'failed','reason'=>'you_are_not_logged_in']));
     }
 
     if($_SESSION['user_id'] == $_GET['add_user_id']){
         http_response_code(200);
-        exit(json_encode(['status'=>'failed','reason'=>'youre_not_narcissus']));
+        exit(json_encode(['status'=>'failed','reason'=>'youre_not_narcissus_asshole']));
     }
 
     require("config.php");

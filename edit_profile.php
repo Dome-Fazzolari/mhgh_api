@@ -1,4 +1,7 @@
 <?php
+    if(isset($_COOKIE['PHPSESSID'])){
+        session_id($_COOKIE['PHPSESSID']);
+    }
     session_start();
     if($_SERVER["REQUEST_METHOD"] != 'POST'){
         $risposta = ['status' => 'failed','reason'=>'bad_request_method'];

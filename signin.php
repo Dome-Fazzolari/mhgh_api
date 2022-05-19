@@ -1,5 +1,4 @@
 <?php
-    session_start();
     if($_SERVER["REQUEST_METHOD"] === 'POST'){
         require('config.php');
 
@@ -45,6 +44,8 @@
         $_SESSION["user_id"] = $user_id;
         http_send_status(200);
         $risposta = ['status'=>'success'];
+        $mese = 60 *60 * 24 * 7 * 4; //secondi in un mese
+        setcookie('PHPSESSID',session_id(),time()+$mese);
         exit(json_encode($risposta));
 
     }else{

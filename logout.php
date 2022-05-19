@@ -1,8 +1,12 @@
 <?php
+    if(isset($_COOKIE['PHPSESSID'])){
+        session_id($_COOKIE['PHPSESSID']);
+    }
     session_start();
     if(isset($_SESSION['user_id'])){
         session_unset();
         session_destroy();
+        setcookie('PHPSESSID','',-3600);
         http_response_code(200);
         exit(json_encode(['status'=>'success']));
     }else{

@@ -137,6 +137,33 @@
             </table>
             <input type="submit" value="Cerca utenti">
         </form>
+    </div><br>
+    <div style="border: 1px solid black;padding: 10px">
+        <h3>Home</h3>
+        <button><a href="home.php">Vai alla home</a></button>
+    </div><br>
+    <div style="border: 1px solid black;padding: 10px">
+        <h3>Cerca caccia</h3>
+        <form action="search_hunt.php" method="get">
+            <table>
+                <tr>
+                    <td><label for="preferenze_caccia">preferenze di caccia</label></td>
+                    <td>
+                        <select name="preferenze_caccia" id="preferenze_caccia">
+                        <option value="ffn">For fun</option>
+                        <option value="trh">Try hard</option>
+                        <option value="srh">Cerco aiuto</option>
+                        <option value="gvh">Voglio aiutare</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="HR">HR minimo</label></td>
+                    <td><input type="number" name="HR" id="HR"></td>
+                </tr>
+            </table>
+            <input type="submit" value="Ricerca">
+        </form>
     </div>
 </body>
 </html>

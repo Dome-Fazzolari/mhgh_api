@@ -1,9 +1,14 @@
 <?php
+    if(isset($_COOKIE['PHPSESSID'])){
+        session_id($_COOKIE['PHPSESSID']);
+    }
     session_start();
-    if($_SERVER['REQUEST_METHOD'] === 'POST'){  //Verifico che la richiesta si post
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if(isset($_SESSION["user_id"])){
             http_response_code(200);
             $risposta = ['status' => 'success'];
+            $mese = 60 *60 * 24 * 7 * 4; //secondi in un mese
+            setcookie('PHPSESSID',session_id(),time()+$mese);
             exit(json_encode($risposta));
         }else {
             require("config.php");
@@ -26,6 +31,8 @@
                         http_response_code(200);
                         $_SESSION['user_id'] = $riga["id"];
                         $risposta = ['status' => 'success','user_id'=>$riga["id"]];
+                        $mese = 60 *60 * 24 * 7 * 4; //secondi in un mese
+                        setcookie('PHPSESSID',session_id(),time()+$mese);
                         exit(json_encode($risposta));
                     }else{
                         http_response_code(200);

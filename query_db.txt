@@ -71,3 +71,7 @@ query per dati utente
 select username,sesso,discord_data,bio_personale,link_propic,arma_preferita,preferenze_caccia,orario_libero_inizio,orario_libero_fine,HR,piattaforma
 from utente
 where fk_credenziali = 1001
+
+select utente.username,utente.fk_credenziali
+from utenti_preferiti join utente on utente.fk_credenziali = utenti_preferiti.utente_salvato
+where utenti_preferiti.fk_utente = 1002
