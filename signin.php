@@ -24,11 +24,9 @@
         try{
             $dichiarazioneInserimento->execute();
         }catch(Exception $e){
-            http_response_code(500);
-            exit (json_encode(['status' => 'error','error'=>'user_already_exists']));
+            http_response_code(200);
+            exit (json_encode(['status' => 'failed','reason'=>'user_already_exists']));
         }
-
-        echo "\ninserito e verificato utente doppio";
 
         $dichiarazione = $connessioneDB->prepare("SELECT id FROM credenziali_utenti WHERE email = ?");
         $dichiarazione->bind_param("s",$email);
@@ -42,7 +40,7 @@
         $dichiarazione->bind_param("si",$username,$user_id);
         $dichiarazione->execute();
         $_SESSION["user_id"] = $user_id;
-        http_send_status(200);
+        http_response_code(200);
         $risposta = ['status'=>'success'];
         $mese = 60 *60 * 24 * 7 * 4; //secondi in un mese
         setcookie('PHPSESSID',session_id(),time()+$mese);
